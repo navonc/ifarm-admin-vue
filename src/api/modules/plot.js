@@ -17,7 +17,7 @@ import request from '../request'
  */
 export function getPlotList(params) {
   return request({
-    url: '/admin/plots',
+    url: '/api/farm-plots',
     method: 'GET',
     params
   })
@@ -30,7 +30,7 @@ export function getPlotList(params) {
  */
 export function getPlotDetail(id) {
   return request({
-    url: `/admin/plots/${id}`,
+    url: `/api/farm-plots/${id}`,
     method: 'GET'
   })
 }
@@ -51,7 +51,7 @@ export function getPlotDetail(id) {
  */
 export function createPlot(data) {
   return request({
-    url: '/admin/plots',
+    url: '/api/farm-plots',
     method: 'POST',
     data
   })
@@ -65,7 +65,7 @@ export function createPlot(data) {
  */
 export function updatePlot(id, data) {
   return request({
-    url: `/admin/plots/${id}`,
+    url: `/api/farm-plots/${id}`,
     method: 'PUT',
     data
   })
@@ -78,7 +78,7 @@ export function updatePlot(id, data) {
  */
 export function deletePlot(id) {
   return request({
-    url: `/admin/plots/${id}`,
+    url: `/api/farm-plots/${id}`,
     method: 'DELETE'
   })
 }
@@ -90,7 +90,7 @@ export function deletePlot(id) {
  */
 export function batchDeletePlots(ids) {
   return request({
-    url: '/admin/plots/batch',
+    url: '/api/farm-plots/batch',
     method: 'DELETE',
     data: { ids }
   })
@@ -104,7 +104,7 @@ export function batchDeletePlots(ids) {
  */
 export function togglePlotStatus(id, enabled) {
   return request({
-    url: `/admin/plots/${id}/status`,
+    url: `/api/farm-plots/${id}/status`,
     method: 'PUT',
     data: { enabled }
   })
@@ -118,7 +118,7 @@ export function togglePlotStatus(id, enabled) {
  */
 export function updatePlotStatus(id, plotStatus) {
   return request({
-    url: `/admin/plots/${id}/plot-status`,
+    url: `/api/farm-plots/${id}/plot-status`,
     method: 'PUT',
     data: { plotStatus }
   })
@@ -132,7 +132,7 @@ export function updatePlotStatus(id, plotStatus) {
  */
 export function batchUpdatePlotStatus(ids, plotStatus) {
   return request({
-    url: '/admin/plots/batch/plot-status',
+    url: '/api/farm-plots/batch/plot-status',
     method: 'PUT',
     data: { ids, plotStatus }
   })
@@ -145,7 +145,7 @@ export function batchUpdatePlotStatus(ids, plotStatus) {
  */
 export function getPlotStats(id) {
   return request({
-    url: `/admin/plots/${id}/stats`,
+    url: `/api/farm-plots/${id}/stats`,
     method: 'GET'
   })
 }
@@ -158,7 +158,7 @@ export function getPlotStats(id) {
  */
 export function getPlotProjects(id, params) {
   return request({
-    url: `/admin/plots/${id}/projects`,
+    url: `/api/farm-plots/${id}/projects`,
     method: 'GET',
     params
   })
@@ -175,7 +175,7 @@ export function getPlotProjects(id, params) {
  */
 export function getPlotSelector(params) {
   return request({
-    url: '/admin/plots/selector',
+    url: '/api/farm-plots/selector',
     method: 'GET',
     params
   })
@@ -188,7 +188,7 @@ export function getPlotSelector(params) {
  */
 export function uploadPlotImage(formData) {
   return request({
-    url: '/admin/plots/upload',
+    url: '/api/farm-plots/upload',
     method: 'POST',
     data: formData,
     headers: {
@@ -203,7 +203,7 @@ export function uploadPlotImage(formData) {
  */
 export function getPlotStatusOptions() {
   return request({
-    url: '/admin/plots/status-options',
+    url: '/api/farm-plots/status-options',
     method: 'GET'
   })
 }
@@ -214,7 +214,7 @@ export function getPlotStatusOptions() {
  */
 export function getSoilTypeOptions() {
   return request({
-    url: '/admin/plots/soil-types',
+    url: '/api/farm-plots/soil-types',
     method: 'GET'
   })
 }
@@ -225,7 +225,7 @@ export function getSoilTypeOptions() {
  */
 export function getIrrigationTypeOptions() {
   return request({
-    url: '/admin/plots/irrigation-types',
+    url: '/api/farm-plots/irrigation-types',
     method: 'GET'
   })
 }

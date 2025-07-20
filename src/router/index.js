@@ -164,6 +164,39 @@ const routes = [
               requiresAuth: true,
               allowedRoles: ['admin', 'farmer']
             }
+          },
+          {
+            path: 'create',
+            name: 'PlotCreate',
+            component: () => import('@/views/Plot/Form.vue'),
+            meta: {
+              title: '新建地块',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
+          },
+          {
+            path: ':id',
+            name: 'PlotDetail',
+            component: () => import('@/views/Plot/Detail.vue'),
+            meta: {
+              title: '地块详情',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
+          },
+          {
+            path: ':id/edit',
+            name: 'PlotEdit',
+            component: () => import('@/views/Plot/Form.vue'),
+            meta: {
+              title: '编辑地块',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
           }
         ]
       },

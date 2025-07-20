@@ -20,7 +20,7 @@ import request from '../request'
  */
 export function getProjectList(params) {
   return request({
-    url: '/admin/projects',
+    url: '/api/adoption-projects/admin',
     method: 'GET',
     params
   })
@@ -33,7 +33,7 @@ export function getProjectList(params) {
  */
 export function getMyProjectList(params) {
   return request({
-    url: '/admin/projects/my',
+    url: '/api/adoption-projects/my',
     method: 'GET',
     params
   })
@@ -46,7 +46,7 @@ export function getMyProjectList(params) {
  */
 export function getProjectDetail(id) {
   return request({
-    url: `/admin/projects/${id}`,
+    url: `/api/adoption-projects/${id}`,
     method: 'GET'
   })
 }
@@ -69,7 +69,7 @@ export function getProjectDetail(id) {
  */
 export function createProject(data) {
   return request({
-    url: '/admin/projects',
+    url: '/api/adoption-projects',
     method: 'POST',
     data
   })
@@ -83,7 +83,7 @@ export function createProject(data) {
  */
 export function updateProject(id, data) {
   return request({
-    url: `/admin/projects/${id}`,
+    url: `/api/adoption-projects/${id}`,
     method: 'PUT',
     data
   })
@@ -96,7 +96,7 @@ export function updateProject(id, data) {
  */
 export function deleteProject(id) {
   return request({
-    url: `/admin/projects/${id}`,
+    url: `/api/adoption-projects/${id}`,
     method: 'DELETE'
   })
 }
@@ -108,7 +108,7 @@ export function deleteProject(id) {
  */
 export function batchDeleteProjects(ids) {
   return request({
-    url: '/admin/projects/batch',
+    url: '/api/adoption-projects/batch',
     method: 'DELETE',
     data: { ids }
   })
@@ -122,7 +122,7 @@ export function batchDeleteProjects(ids) {
  */
 export function updateProjectStatus(id, projectStatus) {
   return request({
-    url: `/admin/projects/${id}/status`,
+    url: `/api/adoption-projects/${id}/status`,
     method: 'PUT',
     data: { projectStatus }
   })
@@ -136,7 +136,7 @@ export function updateProjectStatus(id, projectStatus) {
  */
 export function batchUpdateProjectStatus(ids, projectStatus) {
   return request({
-    url: '/admin/projects/batch/status',
+    url: '/api/adoption-projects/batch/status',
     method: 'PUT',
     data: { ids, projectStatus }
   })
@@ -149,7 +149,7 @@ export function batchUpdateProjectStatus(ids, projectStatus) {
  */
 export function publishProject(id) {
   return request({
-    url: `/admin/projects/${id}/publish`,
+    url: `/api/adoption-projects/${id}/publish`,
     method: 'PUT'
   })
 }
@@ -164,7 +164,7 @@ export function publishProject(id) {
  */
 export function startPlanting(id, data) {
   return request({
-    url: `/admin/projects/${id}/start-planting`,
+    url: `/api/adoption-projects/${id}/start-planting`,
     method: 'PUT',
     data
   })
@@ -181,7 +181,7 @@ export function startPlanting(id, data) {
  */
 export function startHarvesting(id, data) {
   return request({
-    url: `/admin/projects/${id}/start-harvesting`,
+    url: `/api/adoption-projects/${id}/start-harvesting`,
     method: 'PUT',
     data
   })
@@ -197,7 +197,7 @@ export function startHarvesting(id, data) {
  */
 export function completeProject(id, data) {
   return request({
-    url: `/admin/projects/${id}/complete`,
+    url: `/api/adoption-projects/${id}/complete`,
     method: 'PUT',
     data
   })
@@ -212,7 +212,7 @@ export function completeProject(id, data) {
  */
 export function cancelProject(id, data) {
   return request({
-    url: `/admin/projects/${id}/cancel`,
+    url: `/api/adoption-projects/${id}/cancel`,
     method: 'PUT',
     data
   })
@@ -225,7 +225,7 @@ export function cancelProject(id, data) {
  */
 export function getProjectStats(id) {
   return request({
-    url: `/admin/projects/${id}/stats`,
+    url: `/api/adoption-projects/${id}/stats`,
     method: 'GET'
   })
 }
@@ -238,7 +238,7 @@ export function getProjectStats(id) {
  */
 export function getProjectOrders(id, params) {
   return request({
-    url: `/admin/projects/${id}/orders`,
+    url: `/api/adoption-projects/${id}/orders`,
     method: 'GET',
     params
   })
@@ -251,7 +251,7 @@ export function getProjectOrders(id, params) {
  */
 export function uploadProjectImage(formData) {
   return request({
-    url: '/admin/projects/upload',
+    url: '/api/adoption-projects/upload',
     method: 'POST',
     data: formData,
     headers: {
@@ -266,7 +266,7 @@ export function uploadProjectImage(formData) {
  */
 export function getProjectStatusOptions() {
   return request({
-    url: '/admin/projects/status-options',
+    url: '/api/adoption-projects/status-options',
     method: 'GET'
   })
 }

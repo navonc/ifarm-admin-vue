@@ -18,7 +18,24 @@ import request from '../request'
  */
 export function getFarmList(params) {
   return request({
-    url: '/admin/farms',
+    url: '/api/farms',
+    method: 'GET',
+    params
+  })
+}
+
+/**
+ * 获取我的农场列表
+ * @param {Object} params - 查询参数
+ * @param {number} params.current - 当前页码
+ * @param {number} params.size - 每页大小
+ * @param {string} [params.farmName] - 农场名称
+ * @param {boolean} [params.enabled] - 是否启用
+ * @returns {Promise} 我的农场列表响应
+ */
+export function getMyFarmList(params) {
+  return request({
+    url: '/api/farms/my',
     method: 'GET',
     params
   })
@@ -31,7 +48,7 @@ export function getFarmList(params) {
  */
 export function getFarmDetail(id) {
   return request({
-    url: `/admin/farms/${id}`,
+    url: `/api/farms/${id}`,
     method: 'GET'
   })
 }
@@ -59,7 +76,7 @@ export function getFarmDetail(id) {
  */
 export function createFarm(data) {
   return request({
-    url: '/admin/farms',
+    url: '/api/farms',
     method: 'POST',
     data
   })
@@ -73,7 +90,7 @@ export function createFarm(data) {
  */
 export function updateFarm(id, data) {
   return request({
-    url: `/admin/farms/${id}`,
+    url: `/api/farms/${id}`,
     method: 'PUT',
     data
   })
@@ -86,7 +103,7 @@ export function updateFarm(id, data) {
  */
 export function deleteFarm(id) {
   return request({
-    url: `/admin/farms/${id}`,
+    url: `/api/farms/${id}`,
     method: 'DELETE'
   })
 }
@@ -98,7 +115,7 @@ export function deleteFarm(id) {
  */
 export function batchDeleteFarms(ids) {
   return request({
-    url: '/admin/farms/batch',
+    url: '/api/farms/batch',
     method: 'DELETE',
     data: { ids }
   })
@@ -112,7 +129,7 @@ export function batchDeleteFarms(ids) {
  */
 export function toggleFarmStatus(id, enabled) {
   return request({
-    url: `/admin/farms/${id}/status`,
+    url: `/api/farms/${id}/status`,
     method: 'PUT',
     data: { enabled }
   })
@@ -126,7 +143,7 @@ export function toggleFarmStatus(id, enabled) {
  */
 export function batchToggleFarmStatus(ids, enabled) {
   return request({
-    url: '/admin/farms/batch/status',
+    url: '/api/farms/batch/status',
     method: 'PUT',
     data: { ids, enabled }
   })
@@ -139,7 +156,7 @@ export function batchToggleFarmStatus(ids, enabled) {
  */
 export function getFarmStats(id) {
   return request({
-    url: `/admin/farms/${id}/stats`,
+    url: `/api/farms/${id}/stats`,
     method: 'GET'
   })
 }
@@ -152,7 +169,7 @@ export function getFarmStats(id) {
  */
 export function getFarmPlots(id, params) {
   return request({
-    url: `/admin/farms/${id}/plots`,
+    url: `/api/farms/${id}/plots`,
     method: 'GET',
     params
   })
@@ -166,7 +183,7 @@ export function getFarmPlots(id, params) {
  */
 export function getFarmProjects(id, params) {
   return request({
-    url: `/admin/farms/${id}/projects`,
+    url: `/api/farms/${id}/projects`,
     method: 'GET',
     params
   })
@@ -181,7 +198,7 @@ export function getFarmProjects(id, params) {
  */
 export function getFarmSelector(params) {
   return request({
-    url: '/admin/farms/selector',
+    url: '/api/farms/selector',
     method: 'GET',
     params
   })
@@ -194,7 +211,7 @@ export function getFarmSelector(params) {
  */
 export function uploadFarmImage(formData) {
   return request({
-    url: '/admin/farms/upload',
+    url: '/api/farms/upload',
     method: 'POST',
     data: formData,
     headers: {
@@ -210,7 +227,7 @@ export function uploadFarmImage(formData) {
  */
 export function getRegionData(parentId) {
   return request({
-    url: '/admin/regions',
+    url: '/api/regions',
     method: 'GET',
     params: { parentId }
   })
@@ -223,7 +240,7 @@ export function getRegionData(parentId) {
  */
 export function getCoordinates(address) {
   return request({
-    url: '/admin/geocoding',
+    url: '/api/geocoding',
     method: 'GET',
     params: { address }
   })

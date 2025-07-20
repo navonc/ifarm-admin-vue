@@ -14,7 +14,7 @@ import request from '../request'
  */
 export function getCategoryTree(params) {
   return request({
-    url: '/admin/categories/tree',
+    url: '/api/categories/tree',
     method: 'GET',
     params
   })
@@ -32,7 +32,7 @@ export function getCategoryTree(params) {
  */
 export function getCategoryList(params) {
   return request({
-    url: '/admin/categories',
+    url: '/api/categories',
     method: 'GET',
     params
   })
@@ -45,7 +45,7 @@ export function getCategoryList(params) {
  */
 export function getCategoryDetail(id) {
   return request({
-    url: `/admin/categories/${id}`,
+    url: `/api/categories/${id}`,
     method: 'GET'
   })
 }
@@ -63,7 +63,7 @@ export function getCategoryDetail(id) {
  */
 export function createCategory(data) {
   return request({
-    url: '/admin/categories',
+    url: '/api/categories',
     method: 'POST',
     data
   })
@@ -77,7 +77,7 @@ export function createCategory(data) {
  */
 export function updateCategory(id, data) {
   return request({
-    url: `/admin/categories/${id}`,
+    url: `/api/categories/${id}`,
     method: 'PUT',
     data
   })
@@ -90,7 +90,7 @@ export function updateCategory(id, data) {
  */
 export function deleteCategory(id) {
   return request({
-    url: `/admin/categories/${id}`,
+    url: `/api/categories/${id}`,
     method: 'DELETE'
   })
 }
@@ -102,7 +102,7 @@ export function deleteCategory(id) {
  */
 export function batchDeleteCategories(ids) {
   return request({
-    url: '/admin/categories/batch',
+    url: '/api/categories/batch',
     method: 'DELETE',
     data: { ids }
   })
@@ -116,7 +116,7 @@ export function batchDeleteCategories(ids) {
  */
 export function toggleCategoryStatus(id, enabled) {
   return request({
-    url: `/admin/categories/${id}/status`,
+    url: `/api/categories/${id}/status`,
     method: 'PUT',
     data: { enabled }
   })
@@ -131,7 +131,7 @@ export function toggleCategoryStatus(id, enabled) {
  */
 export function moveCategory(id, targetParentId, sortOrder) {
   return request({
-    url: `/admin/categories/${id}/move`,
+    url: `/api/categories/${id}/move`,
     method: 'PUT',
     data: { targetParentId, sortOrder }
   })
@@ -146,7 +146,7 @@ export function moveCategory(id, targetParentId, sortOrder) {
  */
 export function sortCategories(sortData) {
   return request({
-    url: '/admin/categories/sort',
+    url: '/api/categories/sort',
     method: 'PUT',
     data: { sortData }
   })
@@ -161,7 +161,7 @@ export function sortCategories(sortData) {
  */
 export function getCategorySelector(params) {
   return request({
-    url: '/admin/categories/selector',
+    url: '/api/categories/selector',
     method: 'GET',
     params
   })
@@ -174,7 +174,7 @@ export function getCategorySelector(params) {
  */
 export function getCategoryPath(id) {
   return request({
-    url: `/admin/categories/${id}/path`,
+    url: `/api/categories/${id}/path`,
     method: 'GET'
   })
 }
@@ -186,7 +186,7 @@ export function getCategoryPath(id) {
  */
 export function getCategoryStats(id) {
   return request({
-    url: `/admin/categories/${id}/stats`,
+    url: `/api/categories/${id}/stats`,
     method: 'GET'
   })
 }
@@ -199,7 +199,7 @@ export function getCategoryStats(id) {
  */
 export function getCategoryCrops(id, params) {
   return request({
-    url: `/admin/categories/${id}/crops`,
+    url: `/api/categories/${id}/crops`,
     method: 'GET',
     params
   })

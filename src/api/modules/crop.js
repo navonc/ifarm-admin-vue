@@ -16,7 +16,7 @@ import request from '../request'
  */
 export function getCropList(params) {
   return request({
-    url: '/admin/crops',
+    url: '/api/crops',
     method: 'GET',
     params
   })
@@ -29,7 +29,7 @@ export function getCropList(params) {
  */
 export function getCropDetail(id) {
   return request({
-    url: `/admin/crops/${id}`,
+    url: `/api/crops/${id}`,
     method: 'GET'
   })
 }
@@ -53,7 +53,7 @@ export function getCropDetail(id) {
  */
 export function createCrop(data) {
   return request({
-    url: '/admin/crops',
+    url: '/api/crops',
     method: 'POST',
     data
   })
@@ -67,7 +67,7 @@ export function createCrop(data) {
  */
 export function updateCrop(id, data) {
   return request({
-    url: `/admin/crops/${id}`,
+    url: `/api/crops/${id}`,
     method: 'PUT',
     data
   })
@@ -80,7 +80,7 @@ export function updateCrop(id, data) {
  */
 export function deleteCrop(id) {
   return request({
-    url: `/admin/crops/${id}`,
+    url: `/api/crops/${id}`,
     method: 'DELETE'
   })
 }
@@ -92,7 +92,7 @@ export function deleteCrop(id) {
  */
 export function batchDeleteCrops(ids) {
   return request({
-    url: '/admin/crops/batch',
+    url: '/api/crops/batch',
     method: 'DELETE',
     data: { ids }
   })
@@ -106,7 +106,7 @@ export function batchDeleteCrops(ids) {
  */
 export function toggleCropStatus(id, enabled) {
   return request({
-    url: `/admin/crops/${id}/status`,
+    url: `/api/crops/${id}/status`,
     method: 'PUT',
     data: { enabled }
   })
@@ -120,7 +120,7 @@ export function toggleCropStatus(id, enabled) {
  */
 export function batchToggleCropStatus(ids, enabled) {
   return request({
-    url: '/admin/crops/batch/status',
+    url: '/api/crops/batch/status',
     method: 'PUT',
     data: { ids, enabled }
   })
@@ -136,7 +136,7 @@ export function batchToggleCropStatus(ids, enabled) {
  */
 export function getCropSelector(params) {
   return request({
-    url: '/admin/crops/selector',
+    url: '/api/crops/selector',
     method: 'GET',
     params
   })
@@ -149,7 +149,7 @@ export function getCropSelector(params) {
  */
 export function uploadCropImage(formData) {
   return request({
-    url: '/admin/crops/upload',
+    url: '/api/crops/upload',
     method: 'POST',
     data: formData,
     headers: {
@@ -164,7 +164,7 @@ export function uploadCropImage(formData) {
  */
 export function getSeasonOptions() {
   return request({
-    url: '/admin/crops/seasons',
+    url: '/api/crops/seasons',
     method: 'GET'
   })
 }
@@ -175,7 +175,7 @@ export function getSeasonOptions() {
  */
 export function getSoilRequirementOptions() {
   return request({
-    url: '/admin/crops/soil-requirements',
+    url: '/api/crops/soil-requirements',
     method: 'GET'
   })
 }
@@ -186,7 +186,7 @@ export function getSoilRequirementOptions() {
  */
 export function getClimateRequirementOptions() {
   return request({
-    url: '/admin/crops/climate-requirements',
+    url: '/api/crops/climate-requirements',
     method: 'GET'
   })
 }
@@ -198,7 +198,7 @@ export function getClimateRequirementOptions() {
  */
 export function getCropStats(id) {
   return request({
-    url: `/admin/crops/${id}/stats`,
+    url: `/api/crops/${id}/stats`,
     method: 'GET'
   })
 }
@@ -211,7 +211,7 @@ export function getCropStats(id) {
  */
 export function getCropProjects(id, params) {
   return request({
-    url: `/admin/crops/${id}/projects`,
+    url: `/api/crops/${id}/projects`,
     method: 'GET',
     params
   })

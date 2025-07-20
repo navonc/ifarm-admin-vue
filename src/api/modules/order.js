@@ -23,7 +23,7 @@ import request from '../request'
  */
 export function getOrderList(params) {
   return request({
-    url: '/admin/orders',
+    url: '/api/adoption-orders/admin',
     method: 'GET',
     params
   })
@@ -36,7 +36,21 @@ export function getOrderList(params) {
  */
 export function getMyOrderList(params) {
   return request({
-    url: '/admin/orders/my',
+    url: '/api/adoption-orders/my',
+    method: 'GET',
+    params
+  })
+}
+
+/**
+ * 获取农场订单列表
+ * @param {number} farmId - 农场ID
+ * @param {Object} params - 查询参数
+ * @returns {Promise} 农场订单列表响应
+ */
+export function getFarmOrderList(farmId, params) {
+  return request({
+    url: `/api/adoption-orders/farm/${farmId}`,
     method: 'GET',
     params
   })
@@ -49,7 +63,7 @@ export function getMyOrderList(params) {
  */
 export function getOrderDetail(id) {
   return request({
-    url: `/admin/orders/${id}`,
+    url: `/api/adoption-orders/${id}`,
     method: 'GET'
   })
 }
@@ -63,7 +77,7 @@ export function getOrderDetail(id) {
  */
 export function updateOrder(id, data) {
   return request({
-    url: `/admin/orders/${id}`,
+    url: `/api/adoption-orders/${id}`,
     method: 'PUT',
     data
   })
@@ -78,7 +92,7 @@ export function updateOrder(id, data) {
  */
 export function cancelOrder(id, data) {
   return request({
-    url: `/admin/orders/${id}/cancel`,
+    url: `/api/adoption-orders/${id}/cancel`,
     method: 'PUT',
     data
   })
@@ -93,7 +107,7 @@ export function cancelOrder(id, data) {
  */
 export function batchCancelOrders(ids, data) {
   return request({
-    url: '/admin/orders/batch/cancel',
+    url: '/api/adoption-orders/batch/cancel',
     method: 'PUT',
     data: { ids, ...data }
   })
@@ -110,7 +124,7 @@ export function batchCancelOrders(ids, data) {
  */
 export function confirmPayment(id, data) {
   return request({
-    url: `/admin/orders/${id}/confirm-payment`,
+    url: `/api/adoption-orders/${id}/confirm-payment`,
     method: 'PUT',
     data
   })
@@ -126,7 +140,7 @@ export function confirmPayment(id, data) {
  */
 export function applyRefund(id, data) {
   return request({
-    url: `/admin/orders/${id}/refund`,
+    url: `/api/adoption-orders/${id}/refund`,
     method: 'PUT',
     data
   })
@@ -143,7 +157,7 @@ export function applyRefund(id, data) {
  */
 export function confirmRefund(id, data) {
   return request({
-    url: `/admin/orders/${id}/confirm-refund`,
+    url: `/api/adoption-orders/${id}/confirm-refund`,
     method: 'PUT',
     data
   })
@@ -159,7 +173,7 @@ export function confirmRefund(id, data) {
  */
 export function getOrderStats(params) {
   return request({
-    url: '/admin/orders/stats',
+    url: '/api/adoption-orders/stats',
     method: 'GET',
     params
   })
@@ -172,7 +186,7 @@ export function getOrderStats(params) {
  */
 export function exportOrders(params) {
   return request({
-    url: '/admin/orders/export',
+    url: '/api/adoption-orders/export',
     method: 'GET',
     params,
     responseType: 'blob'
@@ -185,7 +199,7 @@ export function exportOrders(params) {
  */
 export function getOrderStatusOptions() {
   return request({
-    url: '/admin/orders/status-options',
+    url: '/api/adoption-orders/status-options',
     method: 'GET'
   })
 }
@@ -196,7 +210,7 @@ export function getOrderStatusOptions() {
  */
 export function getPaymentMethodOptions() {
   return request({
-    url: '/admin/orders/payment-methods',
+    url: '/api/adoption-orders/payment-methods',
     method: 'GET'
   })
 }
@@ -212,7 +226,7 @@ export function getPaymentMethodOptions() {
  */
 export function getOrderTrends(params) {
   return request({
-    url: '/admin/orders/trends',
+    url: '/api/adoption-orders/trends',
     method: 'GET',
     params
   })
@@ -228,7 +242,7 @@ export function getOrderTrends(params) {
  */
 export function getOrderAmountDistribution(params) {
   return request({
-    url: '/admin/orders/amount-distribution',
+    url: '/api/adoption-orders/amount-distribution',
     method: 'GET',
     params
   })
