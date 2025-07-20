@@ -110,11 +110,57 @@ const routes = [
             }
           },
           {
-            path: 'plots',
-            name: 'FarmPlots',
+            path: 'create',
+            name: 'FarmCreate',
+            component: () => import('@/views/Farm/Form.vue'),
+            meta: {
+              title: '新建农场',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
+          },
+          {
+            path: ':id',
+            name: 'FarmDetail',
+            component: () => import('@/views/Farm/Detail.vue'),
+            meta: {
+              title: '农场详情',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
+          },
+          {
+            path: ':id/edit',
+            name: 'FarmEdit',
+            component: () => import('@/views/Farm/Form.vue'),
+            meta: {
+              title: '编辑农场',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
+          }
+        ]
+      },
+      {
+        path: 'plots',
+        name: 'Plots',
+        redirect: 'plots/list',
+        meta: {
+          title: '地块管理',
+          icon: 'Grid',
+          requiresAuth: true,
+          allowedRoles: ['admin', 'farmer']
+        },
+        children: [
+          {
+            path: 'list',
+            name: 'PlotList',
             component: () => import('@/views/Farm/Plots.vue'),
             meta: {
-              title: '地块管理',
+              title: '地块列表',
               requiresAuth: true,
               allowedRoles: ['admin', 'farmer']
             }
