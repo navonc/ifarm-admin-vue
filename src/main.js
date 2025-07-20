@@ -9,6 +9,11 @@ import router from './router'
 import { setupRouterGuards, setupRouterErrorHandler } from './router/guards'
 import './styles/global.scss'
 
+// 开发环境下导入API测试工具
+if (import.meta.env.DEV) {
+  import('./utils/api-test')
+}
+
 const app = createApp(App)
 const pinia = createPinia()
 
