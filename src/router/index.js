@@ -201,6 +201,62 @@ const routes = [
         ]
       },
       {
+        path: 'projects',
+        name: 'Projects',
+        redirect: 'projects/list',
+        meta: {
+          title: '项目管理',
+          icon: 'Crop',
+          requiresAuth: true,
+          allowedRoles: ['admin', 'farmer']
+        },
+        children: [
+          {
+            path: 'list',
+            name: 'ProjectList',
+            component: () => import('@/views/Project/List.vue'),
+            meta: {
+              title: '项目列表',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer']
+            }
+          },
+          {
+            path: 'create',
+            name: 'ProjectCreate',
+            component: () => import('@/views/Project/Form.vue'),
+            meta: {
+              title: '新建项目',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
+          },
+          {
+            path: ':id',
+            name: 'ProjectDetail',
+            component: () => import('@/views/Project/Detail.vue'),
+            meta: {
+              title: '项目详情',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
+          },
+          {
+            path: ':id/edit',
+            name: 'ProjectEdit',
+            component: () => import('@/views/Project/Form.vue'),
+            meta: {
+              title: '编辑项目',
+              requiresAuth: true,
+              allowedRoles: ['admin', 'farmer'],
+              hideInMenu: true
+            }
+          }
+        ]
+      },
+      {
         path: 'users',
         name: 'Users',
         component: () => import('@/views/User/index.vue'),

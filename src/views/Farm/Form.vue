@@ -75,64 +75,13 @@
             </div>
 
             <el-row :gutter="20">
-              <el-col :xs="24" :sm="8">
-                <el-form-item label="省份" prop="province">
-                  <el-select
-                    v-model="formData.province"
-                    placeholder="请选择省份"
-                    clearable
-                    filterable
-                    style="width: 100%"
-                    @change="handleProvinceChange"
-                  >
-                    <el-option
-                      v-for="province in provinces"
-                      :key="province.code"
-                      :label="province.name"
-                      :value="province.code"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-
-              <el-col :xs="24" :sm="8">
-                <el-form-item label="城市" prop="city">
-                  <el-select
-                    v-model="formData.city"
-                    placeholder="请选择城市"
-                    clearable
-                    filterable
-                    style="width: 100%"
-                    :disabled="!formData.province"
-                    @change="handleCityChange"
-                  >
-                    <el-option
-                      v-for="city in cities"
-                      :key="city.code"
-                      :label="city.name"
-                      :value="city.code"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-
-              <el-col :xs="24" :sm="8">
-                <el-form-item label="区县" prop="district">
-                  <el-select
-                    v-model="formData.district"
-                    placeholder="请选择区县"
-                    clearable
-                    filterable
-                    style="width: 100%"
-                    :disabled="!formData.city"
-                  >
-                    <el-option
-                      v-for="district in districts"
-                      :key="district.code"
-                      :label="district.name"
-                      :value="district.code"
-                    />
-                  </el-select>
+              <el-col :xs="24">
+                <el-form-item label="地区选择" prop="region">
+                  <RegionSelector
+                    v-model="regionData"
+                    :required="true"
+                    @change="handleRegionChange"
+                  />
                 </el-form-item>
               </el-col>
 
@@ -152,6 +101,8 @@
                     v-model="formData.longitude"
                     placeholder="请输入经度"
                     :precision="6"
+                    :min="-180"
+                    :max="180"
                     controls-position="right"
                     style="width: 100%"
                   />
@@ -164,6 +115,8 @@
                     v-model="formData.latitude"
                     placeholder="请输入纬度"
                     :precision="6"
+                    :min="-90"
+                    :max="90"
                     controls-position="right"
                     style="width: 100%"
                   />
@@ -315,6 +268,9 @@ import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useFarmStore } from '@/stores/farm'
+import RegionSelector from '@/components/RegionSelector.vue'
+import { createValidationRules, validateImageFile } from '@/utils/validation'
+import { showError } from '@/utils/error-handler'
 
 const route = useRoute()
 const router = useRouter()
@@ -343,68 +299,64 @@ const formData = reactive({
   ownerId: null
 })
 
-// Mock省市区数据
-const provinces = ref([
-  { code: '110000', name: '北京市' },
-  { code: '120000', name: '天津市' },
-  { code: '130000', name: '河北省' },
-  { code: '140000', name: '山西省' },
-  { code: '150000', name: '内蒙古自治区' },
-  { code: '210000', name: '辽宁省' },
-  { code: '220000', name: '吉林省' },
-  { code: '230000', name: '黑龙江省' },
-  { code: '310000', name: '上海市' },
-  { code: '320000', name: '江苏省' },
-  { code: '330000', name: '浙江省' },
-  { code: '340000', name: '安徽省' },
-  { code: '350000', name: '福建省' },
-  { code: '360000', name: '江西省' },
-  { code: '370000', name: '山东省' },
-  { code: '410000', name: '河南省' },
-  { code: '420000', name: '湖北省' },
-  { code: '430000', name: '湖南省' },
-  { code: '440000', name: '广东省' },
-  { code: '450000', name: '广西壮族自治区' },
-  { code: '460000', name: '海南省' },
-  { code: '500000', name: '重庆市' },
-  { code: '510000', name: '四川省' },
-  { code: '520000', name: '贵州省' },
-  { code: '530000', name: '云南省' },
-  { code: '540000', name: '西藏自治区' },
-  { code: '610000', name: '陕西省' },
-  { code: '620000', name: '甘肃省' },
-  { code: '630000', name: '青海省' },
-  { code: '640000', name: '宁夏回族自治区' },
-  { code: '650000', name: '新疆维吾尔自治区' }
-])
+const regionData = reactive({
+  province: '',
+  city: '',
+  district: ''
+})
 
-const cities = ref([])
-const districts = ref([])
+// 删除Mock数据，使用RegionSelector组件
 
 // 表单验证规则
 const formRules = {
   farmName: [
-    { required: true, message: '请输入农场名称', trigger: 'blur' },
+    ...createValidationRules('required', { message: '请输入农场名称' }),
     { min: 2, max: 50, message: '农场名称长度在 2 到 50 个字符', trigger: 'blur' }
   ],
   totalArea: [
-    { required: true, message: '请输入总面积', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '总面积必须大于0', trigger: 'blur' }
+    ...createValidationRules('required', { message: '请输入总面积' }),
+    ...createValidationRules('area', { min: 0.01, max: 10000 })
   ],
-  province: [
-    { required: true, message: '请选择省份', trigger: 'change' }
-  ],
-  city: [
-    { required: true, message: '请选择城市', trigger: 'change' }
-  ],
-  district: [
-    { required: true, message: '请选择区县', trigger: 'change' }
+  region: [
+    {
+      validator: (rule, value, callback) => {
+        if (!regionData.province) {
+          callback(new Error('请选择省份'))
+        } else if (!regionData.city) {
+          callback(new Error('请选择城市'))
+        } else if (!regionData.district) {
+          callback(new Error('请选择区县'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'change'
+    }
   ],
   address: [
-    { required: true, message: '请输入详细地址', trigger: 'blur' }
+    ...createValidationRules('required', { message: '请输入详细地址' }),
+    { min: 5, max: 200, message: '详细地址长度在 5 到 200 个字符', trigger: 'blur' }
+  ],
+  longitude: [
+    ...createValidationRules('longitude')
+  ],
+  latitude: [
+    ...createValidationRules('latitude')
   ],
   contactPhone: [
-    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+    ...createValidationRules('phone')
+  ],
+  coverImage: [
+    {
+      validator: (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请上传农场封面图片'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'change'
+    }
   ]
 }
 
@@ -421,94 +373,57 @@ watch(certificationTypes, (newVal) => {
 }, { deep: true })
 
 // 方法
-const handleProvinceChange = (provinceCode) => {
-  formData.city = ''
-  formData.district = ''
-  cities.value = []
-  districts.value = []
+const handleRegionChange = (regionInfo) => {
+  formData.province = regionInfo.province
+  formData.city = regionInfo.city
+  formData.district = regionInfo.district
 
-  // 模拟获取城市数据
-  if (provinceCode === '110000') {
-    cities.value = [
-      { code: '110100', name: '北京市' }
-    ]
-  } else if (provinceCode === '310000') {
-    cities.value = [
-      { code: '310100', name: '上海市' }
-    ]
-  } else if (provinceCode === '440000') {
-    cities.value = [
-      { code: '440100', name: '广州市' },
-      { code: '440300', name: '深圳市' },
-      { code: '440600', name: '佛山市' }
-    ]
-  }
-}
-
-const handleCityChange = (cityCode) => {
-  formData.district = ''
-  districts.value = []
-
-  // 模拟获取区县数据
-  if (cityCode === '440100') {
-    districts.value = [
-      { code: '440103', name: '荔湾区' },
-      { code: '440104', name: '越秀区' },
-      { code: '440105', name: '海珠区' },
-      { code: '440106', name: '天河区' }
-    ]
-  } else if (cityCode === '440300') {
-    districts.value = [
-      { code: '440303', name: '罗湖区' },
-      { code: '440304', name: '福田区' },
-      { code: '440305', name: '南山区' },
-      { code: '440306', name: '宝安区' }
-    ]
-  }
+  // 触发表单验证
+  formRef.value?.validateField('region')
 }
 
 const beforeCoverUpload = (file) => {
-  const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
-  const isLt2M = file.size / 1024 / 1024 < 2
+  const validation = validateImageFile(file, {
+    maxSize: 2 * 1024 * 1024, // 2MB
+    allowedTypes: ['image/jpeg', 'image/png', 'image/jpg']
+  })
 
-  if (!isJPG) {
-    ElMessage.error('封面图片只能是 JPG/PNG 格式!')
+  if (!validation.valid) {
+    showError(new Error(validation.errors.join('；')))
     return false
   }
-  if (!isLt2M) {
-    ElMessage.error('封面图片大小不能超过 2MB!')
-    return false
-  }
+
   return true
 }
 
 const handleCoverUpload = async (options) => {
-  const formData = new FormData()
-  formData.append('file', options.file)
+  const uploadFormData = new FormData()
+  uploadFormData.append('file', options.file)
 
   try {
-    const url = await farmStore.uploadFarmImage(formData)
+    const url = await farmStore.uploadFarmImage(uploadFormData)
     if (url) {
       formData.coverImage = url
+      // 触发表单验证
+      formRef.value?.validateField('coverImage')
       ElMessage.success('封面图片上传成功')
     }
   } catch (error) {
-    ElMessage.error('封面图片上传失败')
+    showError(error, { showType: 'message' })
   }
 }
 
 const beforeImageUpload = (file) => {
-  const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
-  const isLt2M = file.size / 1024 / 1024 < 2
+  const validation = validateImageFile(file, {
+    maxSize: 2 * 1024 * 1024, // 2MB
+    allowedTypes: ['image/jpeg', 'image/png', 'image/jpg']
+  })
 
-  if (!isJPG) {
-    ElMessage.error('图片只能是 JPG/PNG 格式!')
+  if (!validation.valid) {
+    showError(new Error(validation.errors.join('；')))
     return false
   }
-  if (!isLt2M) {
-    ElMessage.error('图片大小不能超过 2MB!')
-    return false
-  }
+
   return true
 }
 
@@ -527,7 +442,7 @@ const handleImageUpload = async (options) => {
       ElMessage.success('图片上传成功')
     }
   } catch (error) {
-    ElMessage.error('图片上传失败')
+    showError(error, { showType: 'message' })
   }
 }
 
@@ -611,15 +526,10 @@ const loadFarmData = async () => {
         }))
       }
 
-      // 加载对应的城市和区县数据
-      if (farm.province) {
-        handleProvinceChange(farm.province)
-        if (farm.city) {
-          setTimeout(() => {
-            handleCityChange(farm.city)
-          }, 100)
-        }
-      }
+      // 设置地区数据
+      regionData.province = farm.province || ''
+      regionData.city = farm.city || ''
+      regionData.district = farm.district || ''
     }
   }
 }

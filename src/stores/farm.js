@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { farmApi } from '@/api'
+import { showError } from '@/utils/error-handler'
 
 export const useFarmStore = defineStore('farm', () => {
   // 状态
@@ -61,7 +62,7 @@ export const useFarmStore = defineStore('farm', () => {
       }
     } catch (error) {
       console.error('获取农场列表失败:', error)
-      ElMessage.error('获取农场列表失败')
+      showError(error, { showType: 'message' })
     } finally {
       loading.value = false
     }
@@ -82,7 +83,7 @@ export const useFarmStore = defineStore('farm', () => {
       }
     } catch (error) {
       console.error('获取农场详情失败:', error)
-      ElMessage.error('获取农场详情失败')
+      showError(error, { showType: 'message' })
       return null
     } finally {
       loading.value = false
@@ -155,20 +156,27 @@ export const useFarmStore = defineStore('farm', () => {
   async function deleteFarm(id) {
     try {
       loading.value = true
+
+      // 业务验证：检查农场是否可以删除
+      const canDelete = await checkFarmCanDelete(id)
+      if (!canDelete.allowed) {
+        throw new Error(canDelete.reason)
+      }
+
       await farmApi.deleteFarm(id)
-      
+
       ElMessage.success('农场删除成功')
-      
+
       // 从列表中移除
       farmList.value = farmList.value.filter(farm => farm.id !== id)
-      
+
       // 更新总数
       pagination.value.total = Math.max(0, pagination.value.total - 1)
-      
+
       return true
     } catch (error) {
       console.error('删除农场失败:', error)
-      ElMessage.error(error.message || '删除农场失败')
+      showError(error, { showType: 'message' })
       return false
     } finally {
       loading.value = false
@@ -209,25 +217,31 @@ export const useFarmStore = defineStore('farm', () => {
    */
   async function toggleFarmStatus(id, enabled) {
     try {
+      // 业务验证：检查农场状态是否可以切换
+      const canToggle = await checkFarmCanToggleStatus(id, enabled)
+      if (!canToggle.allowed) {
+        throw new Error(canToggle.reason)
+      }
+
       await farmApi.toggleFarmStatus(id, enabled)
-      
+
       ElMessage.success(`农场${enabled ? '启用' : '禁用'}成功`)
-      
+
       // 更新列表中的状态
       const farm = farmList.value.find(f => f.id === id)
       if (farm) {
         farm.enabled = enabled
       }
-      
+
       // 更新当前农场状态
       if (currentFarm.value && currentFarm.value.id === id) {
         currentFarm.value.enabled = enabled
       }
-      
+
       return true
     } catch (error) {
       console.error('切换农场状态失败:', error)
-      ElMessage.error(error.message || '操作失败')
+      showError(error, { showType: 'message' })
       return false
     }
   }
@@ -367,6 +381,76 @@ export const useFarmStore = defineStore('farm', () => {
    */
   function clearCurrentFarm() {
     currentFarm.value = null
+  }
+
+  /**
+   * 检查农场是否可以删除
+   * @param {number} id - 农场ID
+   * @returns {Object} 检查结果
+   */
+  async function checkFarmCanDelete(id) {
+    try {
+      // 获取农场统计信息
+      const stats = await farmApi.getFarmStats(id)
+
+      if (stats.data) {
+        const { plotCount, projectCount, orderCount } = stats.data
+
+        if (plotCount > 0) {
+          return {
+            allowed: false,
+            reason: `农场下还有 ${plotCount} 个地块，请先删除所有地块后再删除农场`
+          }
+        }
+
+        if (projectCount > 0) {
+          return {
+            allowed: false,
+            reason: `农场下还有 ${projectCount} 个项目，请先删除所有项目后再删除农场`
+          }
+        }
+
+        if (orderCount > 0) {
+          return {
+            allowed: false,
+            reason: `农场下还有 ${orderCount} 个订单，无法删除农场`
+          }
+        }
+      }
+
+      return { allowed: true }
+    } catch (error) {
+      // 如果获取统计信息失败，允许删除（由后端进行最终验证）
+      console.warn('获取农场统计信息失败，跳过前端验证:', error)
+      return { allowed: true }
+    }
+  }
+
+  /**
+   * 检查农场状态是否可以切换
+   * @param {number} id - 农场ID
+   * @param {boolean} enabled - 目标状态
+   * @returns {Object} 检查结果
+   */
+  async function checkFarmCanToggleStatus(id, enabled) {
+    try {
+      if (!enabled) {
+        // 禁用农场前检查是否有进行中的项目
+        const stats = await farmApi.getFarmStats(id)
+
+        if (stats.data && stats.data.activeProjectCount > 0) {
+          return {
+            allowed: false,
+            reason: `农场下还有 ${stats.data.activeProjectCount} 个进行中的项目，无法禁用农场`
+          }
+        }
+      }
+
+      return { allowed: true }
+    } catch (error) {
+      console.warn('获取农场状态检查失败，跳过前端验证:', error)
+      return { allowed: true }
+    }
   }
 
   return {
